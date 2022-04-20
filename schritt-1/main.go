@@ -13,7 +13,7 @@ func main() {
 	appl := app.New()
 
 	// Window is the main application window
-	window := appl.NewWindow("Take-1")
+	window := appl.NewWindow("Schritt-1")
 
 	entryField := widget.NewEntry()
 	entryField.SetText("")
