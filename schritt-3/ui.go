@@ -87,7 +87,7 @@ func createUI() {
 	p.app = app.New()
 	p.win = p.app.NewWindow("Step-3")
 
-	// createAndDisplaySplash()
+	createAndDisplaySplash()
 
 	p.win.SetContent(container.NewVBox(srcFileGroup(p),
 		container.New(layout.NewHBoxLayout(), buttonGroup(p))))
@@ -99,12 +99,10 @@ func createAndDisplaySplash() {
 	if drv, ok := fyne.CurrentApp().Driver().(desktop.Driver); ok {
 		splashWindow := drv.CreateSplashWindow()
 
-		//splash := canvas.NewImageFromResource(resources.PDFnmbrrSplash)
-		splash := canvas.NewImageFromFile("../assets/logo.png")
-		splash.FillMode = canvas.ImageFillOriginal
-		splash.Resize(fyne.NewSize(500, 500))
+		splashWindow.SetContent(
+			fyne.NewContainerWithLayout(layout.NewGridWrapLayout(fyne.NewSize(500, 500)),
+				canvas.NewImageFromFile("../assets/logo.png")))
 
-		splashWindow.SetContent(splash)
 		splashWindow.Show()
 
 		go func() {
