@@ -1,14 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
+	"time"
 )
 
 type protoui struct {
@@ -26,8 +29,9 @@ func buttonGroup(p *protoui) fyne.CanvasObject {
 
 	p.count = widget.NewButton("Count Pages", func() {
 		// call domain logic here!
-
+		pc := PageCount(p.fileInput.Text)
 		// set label appropriately
+		p.count.SetText(fmt.Sprint(pc))
 	})
 
 	p.cancel = widget.NewButton("Cancel", func() {
@@ -37,9 +41,10 @@ func buttonGroup(p *protoui) fyne.CanvasObject {
 	buttons := fyne.NewContainerWithLayout(layout.NewHBoxLayout(),
 		layout.NewSpacer(),
 		p.cancel,
+		layout.NewSpacer(),
 		p.count)
 
-	okCancelPanel := widget.NewCard("", "Processing", buttons)
+	okCancelPanel := widget.NewCard("", "", buttons)
 
 	return okCancelPanel
 }
@@ -80,13 +85,34 @@ func createUI() {
 	p.app = app.New()
 	p.win = p.app.NewWindow("Step-3")
 
+	createAndDisplaySplash()
+
 	// upon button press, set status widget
 	p.count = widget.NewButton("Count pages", func() {
-		p.result.SetText(string(PageCount(p.fileInput.Text)))
+		p.result.SetText(fmt.Sprint(PageCount(p.fileInput.Text)))
 	})
 
 	p.win.SetContent(container.NewVBox(srcFileGroup(p),
 		container.New(layout.NewHBoxLayout(), buttonGroup(p))))
 
 	p.win.ShowAndRun()
+}
+
+func createAndDisplaySplash() {
+	if drv, ok := fyne.CurrentApp().Driver().(desktop.Driver); ok {
+		splashWindow := drv.CreateSplashWindow()
+
+		//splash := canvas.NewImageFromResource(resources.PDFnmbrrSplash)
+		splash := canvas.NewImageFromFile("../assets/logo.png")
+		splash.FillMode = canvas.ImageFillOriginal
+		splash.Resize(fyne.NewSize(500, 500))
+
+		splashWindow.SetContent(splash)
+		splashWindow.Show()
+
+		go func() {
+			time.Sleep(time.Second * 5)
+			splashWindow.Close()
+		}()
+	}
 }

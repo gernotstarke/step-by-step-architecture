@@ -7,7 +7,7 @@ go clean -cache
 go build .
 
 # create package for MacOS, assuming we're building FROM MacOS
-fyne package -os darwin -icon icon-1.png
+fyne package -os darwin -icon ../assets/logo.png
 
 
 # !!!
@@ -15,7 +15,7 @@ fyne package -os darwin -icon icon-1.png
 # !!!
 
 # cross-compile for Windows
-fyne-cross windows -app-id "schritt-2" -icon icon-1.png
+fyne-cross windows -app-id "schritt-2" -icon ../assets/logo.png
 
 # cross-compile for Linux
-fyne-cross linux -app-id "schritt-2" -icon icon-1.png
+fyne-cross linux -app-id "schritt-2" -icon ../assets/logo.png
