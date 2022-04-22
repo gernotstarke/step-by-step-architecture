@@ -6,7 +6,6 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/driver/desktop"
 	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
@@ -19,7 +18,7 @@ type protoui struct {
 	win           fyne.Window
 	file          *widget.Label
 	fileInput     *widget.Entry
-	result        *widget.Label
+	result        *canvas.Text
 	srcFileButton *widget.Button
 	count         *widget.Button
 	cancel        *widget.Button
@@ -28,10 +27,12 @@ type protoui struct {
 func buttonGroup(p *protoui) fyne.CanvasObject {
 
 	p.count = widget.NewButton("Count Pages", func() {
-		// call domain logic here!
+
+		p.result.Refresh()
+
 		pc := PageCount(p.fileInput.Text)
-		// set label appropriately
-		p.count.SetText(fmt.Sprint(pc))
+		p.result.Text = p.fileInput.Text + fmt.Sprintf(" has %d pages", pc)
+		//p.result.SetText(fmt.Sprint(pc))
 	})
 
 	p.cancel = widget.NewButton("Cancel", func() {
@@ -44,38 +45,39 @@ func buttonGroup(p *protoui) fyne.CanvasObject {
 		layout.NewSpacer(),
 		p.count)
 
-	okCancelPanel := widget.NewCard("", "", buttons)
+	return buttons
 
-	return okCancelPanel
 }
 
 func srcFileGroup(p *protoui) *fyne.Container {
-	srcDirField := widget.NewEntry()
-	srcDirField.SetText("Step-3")
+	p.fileInput = widget.NewEntry()
+	p.fileInput.SetText("./pdfs/1pg.pdf")
 
-	p.srcFileButton = widget.NewButton("File", func() {
-		dialog.ShowFileOpen(
-			func(reader fyne.URIReadCloser, err error) {
-				if err != nil { // there was an error - tell user
-					dialog.ShowError(err, p.win)
-					return
-				}
-				if reader == nil { // user cancelled
-					return
-				}
-				// reader contains the file
-				srcDirField.SetText(reader.URI().Name())
+	/*
+		p.srcFileButton = widget.NewButton("File", func() {
+			dialog.ShowFileOpen(
+				func(reader fyne.URIReadCloser, err error) {
+					if err != nil { // there was an error - tell user
+						dialog.ShowError(err, p.win)
+						return
+					}
+					if reader == nil { // user cancelled
+						return
+					}
+					// reader contains the file
+					srcDirField.SetText(reader.URI().Name())
 
-			}, p.win)
+				}, p.win)
 
-	})
+		})*/
 
-	srcDirStatusLabel := canvas.NewText("nothing selected", color.Gray{})
-	srcDirStatusLabel.TextSize = 9
+	p.result = canvas.NewText("nothing selected", color.Black)
 
-	inputStatus := container.New(layout.NewVBoxLayout(), srcDirField, srcDirStatusLabel)
+	// TODO: smaller size for result-text
+	//p.result.TextStyle = 9
 
-	return container.New(layout.NewFormLayout(), p.srcFileButton, inputStatus)
+	return container.New(layout.NewVBoxLayout(), p.fileInput, p.result)
+
 }
 
 func createUI() {
@@ -85,12 +87,7 @@ func createUI() {
 	p.app = app.New()
 	p.win = p.app.NewWindow("Step-3")
 
-	createAndDisplaySplash()
-
-	// upon button press, set status widget
-	p.count = widget.NewButton("Count pages", func() {
-		p.result.SetText(fmt.Sprint(PageCount(p.fileInput.Text)))
-	})
+	// createAndDisplaySplash()
 
 	p.win.SetContent(container.NewVBox(srcFileGroup(p),
 		container.New(layout.NewHBoxLayout(), buttonGroup(p))))
