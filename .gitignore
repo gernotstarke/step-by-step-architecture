@@ -4,3 +4,7 @@ schritt-1/schritt-1.app/*
 schritt-1/schritt-1
 *.exe
 .DS_Store
+*/fyne-cross
+*.app
+*.bkp
+schritt-3/schritt-3

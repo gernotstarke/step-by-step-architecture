@@ -15,7 +15,7 @@ fyne package -os darwin -icon icon-1.png
 # !!!
 
 # cross-compile for Windows
-fyne-cross windows -app-id "schritt-2" -icon icon-1.png
+fyne-cross windows -app-id "schritt-3" -icon icon-1.png
 
 # cross-compile for Linux
-fyne-cross linux -app-id "schritt-2" -icon icon-1.png
+fyne-cross linux -app-id "schritt-3" -icon icon-1.png
