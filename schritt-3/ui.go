@@ -100,7 +100,7 @@ func createAndDisplaySplash() {
 		splashWindow := drv.CreateSplashWindow()
 
 		splashWindow.SetContent(
-			fyne.NewContainerWithLayout(layout.NewGridWrapLayout(fyne.NewSize(500, 500)),
+			container.New(layout.NewGridWrapLayout(fyne.NewSize(400, 400)),
 				canvas.NewImageFromFile("../assets/logo.png")))
 
 		splashWindow.Show()
