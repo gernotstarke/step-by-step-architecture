@@ -1,6 +1,8 @@
 package main
 
-import "schritt-4/gui"
+import (
+	"schritt-4/internal/gui"
+)
 
 func main() {
 

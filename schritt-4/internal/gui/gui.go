@@ -11,8 +11,7 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
-	"net/url"
-	"schritt-4/domain"
+	domain2 "schritt-4/internal/domain"
 	"schritt-4/resources"
 )
 
@@ -28,7 +27,7 @@ func CreateMainUI() {
 
 	Appl = app.New()
 
-	Window = Appl.NewWindow(domain.AppName)
+	Window = Appl.NewWindow(domain2.AppName)
 
 	content := container.New(layout.NewVBoxLayout(),
 		logoHeaderPanel(),
@@ -49,38 +48,39 @@ func logoHeaderPanel() *fyne.Container {
 	arc42Logo.SetMinSize(fyne.NewSize(80, 40))
 	arc42Logo.Resize(fyne.NewSize(80, 40))
 
-	arc42URL, _ := url.Parse("https://arc42.org")
-	arc42Link := widget.NewHyperlinkWithStyle("arc42.org",
-		arc42URL, fyne.TextAlignLeading, fyne.TextStyle{Bold: false}, fyne.Te})
-
+	/*
+		arc42URL, _ := url.Parse("https://arc42.org")
+		arc42Link := widget.NewHyperlinkWithStyle("arc42.org",
+			arc42URL, fyne.TextAlignLeading, fyne.TextStyle{Bold: false})
+	*/
 	appLogo := canvas.NewImageFromResource(resources.PDFminionLogoPNG)
 	appLogo.FillMode = canvas.ImageFillContain
 	appLogo.SetMinSize(fyne.NewSize(200, 120))
 	appLogo.Resize(fyne.NewSize(200, 120))
 
-	container := container.New(layout.NewHBoxLayout(),
+	return container.New(layout.NewHBoxLayout(),
 		container.New(layout.NewVBoxLayout(),
 			arc42Logo,
 			layout.NewSpacer(),
-			arc42Link),
+			//arc42Link),
+		),
 		layout.NewSpacer(),
 		appLogo,
 	)
-	return container
 }
 
 func directoriesPanel() fyne.CanvasObject {
 
 	dirContainer := container.New(layout.NewVBoxLayout(),
 		srcDirSelectorGroup())
-	dirPanel := widget.NewCard("", "Directories", dirContainer)
+	dirPanel := widget.NewCard("", "Directory", dirContainer)
 
 	return dirPanel
 }
 
 func srcDirSelectorGroup() *fyne.Container {
 	srcDirField := widget.NewEntry()
-	srcDirField.SetText(domain.SourceDirName())
+	srcDirField.SetText(domain2.SourceDirName())
 
 	srcDirButton := widget.NewButton("Source", func() {
 		dialog.ShowFolderOpen(func(list fyne.ListableURI, err error) {
@@ -97,19 +97,19 @@ func srcDirSelectorGroup() *fyne.Container {
 				dialog.ShowError(err, Window)
 				return
 			}
-			srcDirField.SetText(list.Name())
-			domain.SetSourceDirName(list.Name())
+			srcDirField.SetText(list.Path())
+			domain2.SetSourceDirName(list.Path())
 
-			if domain.CheckSrcDirectoryStatus(list.String()) {
-				fmt.Printf("Folder %s :\n%s", list.Name(), list.String())
+			if domain2.CheckSrcDirectoryStatus(list.Path()) {
+				fmt.Printf("Folder %s :\n%s", list.Path(), list.String())
 				// dialog.ShowInformation("Folder Open", out, Window)
 			}
 		}, Window)
 	})
 	srcDirButton.SetIcon(theme.FolderOpenIcon())
 
-	domain.CheckSrcDirectoryStatus(domain.SourceDirName())
-	srcDirStatusLabel := canvas.NewText("nothing selected", color.Gray{})
+	domain2.CheckSrcDirectoryStatus(domain2.SourceDirName())
+	srcDirStatusLabel := canvas.NewText("nothing selected", color.Gray{128})
 	srcDirStatusLabel.TextSize = 9
 
 	inputStatus := container.New(layout.NewVBoxLayout(), srcDirField, srcDirStatusLabel)
@@ -141,7 +141,7 @@ func statusLine(msg string) *fyne.Container {
 	statusMsg.TextSize = 9
 	statusMsg.Alignment = fyne.TextAlignTrailing
 
-	versionLabel := canvas.NewText("v."+domain.VersionStr, NavyColor)
+	versionLabel := canvas.NewText("v."+domain2.VersionStr, NavyColor)
 	versionLabel.TextSize = 10
 	versionLabel.Alignment = fyne.TextAlignCenter
 
