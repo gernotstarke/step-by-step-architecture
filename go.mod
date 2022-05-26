@@ -1,4 +1,4 @@
-module schritt-2
+module schritt-1
 
 go 1.18
 
