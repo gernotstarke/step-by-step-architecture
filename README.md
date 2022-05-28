@@ -4,11 +4,12 @@ We develop a system based upon quality requirements.
 
 Detailed description of the different steps in my [Obsidian vault](obsidian://ZorgObsidian/Creating%20a%20Cross-Platform%20GUI.md)
 
+The different steps are currently managed by different branches in Git.
 
-## Take 1: Prototype and Strategic Decisions
+## Step 1: Prototype and Strategic Decisions
 
-## Take 2: Testing and Specification
+## Step 2: Testing and Specification
 
-## Take 3: Design Improvements
+## Step 3: Design Improvements
 
-## Take : Improving the Domain
+## Step : Improving the Domain
