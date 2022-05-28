@@ -6,7 +6,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
@@ -18,7 +17,6 @@ func CheckSrcDirectoryStatus(dirName string) bool {
 	if !IsDirExists(dirName, "source") {
 		// file does not exist
 		SetStatusInfo(dirName + " does not exist.")
-		SetSourceDirMessage("Select source directory.")
 		return false
 	} else { // err == nil
 		// directory exists, now check for PDF files
@@ -26,10 +24,8 @@ func CheckSrcDirectoryStatus(dirName string) bool {
 
 		if nrOfPDFs == 0 {
 			SetStatusInfo(dirName + " has no PDF files.")
-			SetSourceDirMessage("0 (zero) PDF files found.")
 			return false
 		} else { // nrOfPDFs > 0
-			SetSourceDirMessage(strconv.Itoa(nrOfPDFs) + "PDF files found")
 			SetStatusInfo("source directory ok")
 			return true
 		}

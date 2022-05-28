@@ -11,23 +11,26 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
-	domain2 "schritt-4/internal/domain"
+	domain "schritt-4/internal/domain"
 	"schritt-4/resources"
 )
 
 // Appl exposes the fyne application - mainly to enable the quit-function to stop the app.
 var Appl fyne.App
+var appVersion string
+
+var UIState uiState
 
 // Window is the main application window
 var Window fyne.Window
 
-// CreateMainUI_take2 creates and shows the main graphical user interface, second version.
+// CreateMainUI creates and shows the main graphical user interface, second version.
 // It creates by delegating to "Panel" functions which will create their respective panel.
 func CreateMainUI() {
 
 	Appl = app.New()
 
-	Window = Appl.NewWindow(domain2.AppName)
+	Window = Appl.NewWindow(domain.AppName)
 
 	content := container.New(layout.NewVBoxLayout(),
 		logoHeaderPanel(),
@@ -56,6 +59,7 @@ func logoHeaderPanel() *fyne.Container {
 	appLogo := canvas.NewImageFromResource(resources.PDFminionLogoPNG)
 	appLogo.FillMode = canvas.ImageFillContain
 	appLogo.SetMinSize(fyne.NewSize(200, 120))
+
 	appLogo.Resize(fyne.NewSize(200, 120))
 
 	return container.New(layout.NewHBoxLayout(),
@@ -80,7 +84,7 @@ func directoriesPanel() fyne.CanvasObject {
 
 func srcDirSelectorGroup() *fyne.Container {
 	srcDirField := widget.NewEntry()
-	srcDirField.SetText(domain2.SourceDirName())
+	srcDirField.SetText(domain.SourceDirName())
 
 	srcDirButton := widget.NewButton("Source", func() {
 		dialog.ShowFolderOpen(func(list fyne.ListableURI, err error) {
@@ -98,9 +102,9 @@ func srcDirSelectorGroup() *fyne.Container {
 				return
 			}
 			srcDirField.SetText(list.Path())
-			domain2.SetSourceDirName(list.Path())
+			domain.SetSourceDirName(list.Path())
 
-			if domain2.CheckSrcDirectoryStatus(list.Path()) {
+			if domain.CheckSrcDirectoryStatus(list.Path()) {
 				fmt.Printf("Folder %s :\n%s", list.Path(), list.String())
 				// dialog.ShowInformation("Folder Open", out, Window)
 			}
@@ -108,7 +112,7 @@ func srcDirSelectorGroup() *fyne.Container {
 	})
 	srcDirButton.SetIcon(theme.FolderOpenIcon())
 
-	domain2.CheckSrcDirectoryStatus(domain2.SourceDirName())
+	domain.CheckSrcDirectoryStatus(domain.SourceDirName())
 	srcDirStatusLabel := canvas.NewText("nothing selected", color.Gray{128})
 	srcDirStatusLabel.TextSize = 9
 
@@ -141,8 +145,8 @@ func statusLine(msg string) *fyne.Container {
 	statusMsg.TextSize = 9
 	statusMsg.Alignment = fyne.TextAlignTrailing
 
-	versionLabel := canvas.NewText("v."+domain2.VersionStr, NavyColor)
-	versionLabel.TextSize = 10
+	versionLabel := canvas.NewText("v."+domain.VersionStr, NavyColor)
+	versionLabel.TextSize = 9
 	versionLabel.Alignment = fyne.TextAlignCenter
 
 	return fyne.NewContainerWithLayout(layout.NewHBoxLayout(),
@@ -155,4 +159,11 @@ func statusLine(msg string) *fyne.Container {
 
 func quitApp() {
 	Appl.Quit()
+}
+
+func setUIState() uiState {
+	uis := UIState
+
+	uis.sourceDirName = ""
+	return uis
 }
