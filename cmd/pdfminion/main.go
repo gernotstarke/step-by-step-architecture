@@ -1,8 +1,8 @@
 package main
 
 import (
-	"schritt-4/internal/domain"
-	"schritt-4/internal/gui"
+	"internal/domain"
+	"internal/gui"
 )
 
 func main() {

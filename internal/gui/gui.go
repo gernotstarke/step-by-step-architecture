@@ -11,8 +11,8 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
-	domain "schritt-4/internal/domain"
-	"schritt-4/resources"
+	"internal/domain"
+	"resources"
 )
 
 // Appl exposes the fyne application - mainly to enable the quit-function to stop the app.
@@ -31,6 +31,7 @@ func CreateMainUI() {
 	Appl = app.New()
 
 	Window = Appl.NewWindow(domain.AppName)
+	Window.SetIcon(theme.FyneLogo())
 
 	content := container.New(layout.NewVBoxLayout(),
 		logoHeaderPanel(),
