@@ -1,7 +1,7 @@
 package domain
 
 import (
-	samplePDFs "internal/sample_pdfs"
+	samplePDFs "internal/samplePDFs"
 	"testing"
 )
 

@@ -1,4 +1,4 @@
-package sample_pdfs
+package samplePDFs
 
 import (
 	"github.com/stretchr/testify/assert"

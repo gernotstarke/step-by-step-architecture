@@ -1,9 +1,5 @@
 package main
 
-import (
-	"internal/gui"
-)
-
 func main() {
 
 	SetupConfiguration()

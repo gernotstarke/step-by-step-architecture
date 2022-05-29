@@ -1,7 +1,7 @@
 package domain
 
 import (
-	samplePDFs "pdfminion/sample_pdfs"
+	samplePDFs "pdfminion/samplePDFs"
 	"testing"
 )
 

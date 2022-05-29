@@ -1,6 +1,6 @@
-// Package sample_pdfs contains constant declarations for several sample PDF files,
+// Package samplePDFs contains constant declarations for several sample PDF files,
 // plus their (relative) path information, so that other test cases can be DRY.
-package sample_pdfs
+package samplePDFs
 
 // private constant
 
