@@ -1,8 +1,8 @@
 package gui
 
 import (
-	"domain"
 	"fmt"
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
@@ -11,7 +11,8 @@ import (
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"image/color"
-	"resources"
+	"pdfminion/internal/domain"
+	"pdfminion/internal/resources"
 )
 
 // Appl exposes the fyne application - mainly to enable the quit-function to stop the app.
@@ -25,18 +26,20 @@ var Window fyne.Window
 
 // CreateMainUI creates and shows the main graphical user interface, second version.
 // It creates by delegating to "Panel" functions which will create their respective panel.
-func CreateMainUI() {
-
+func CreateMainUI(currentAppVersion string) {
+	appVersion = currentAppVersion
 	Appl = app.New()
 
-	Window = Appl.NewWindow(domain.AppName)
-	Window.SetIcon(theme.FyneLogo())
+	Window = Appl.NewWindow("PDFMinion")
+	// SetIcon seems not to work on MacOS
+	// Window.SetIcon(theme.FyneLogo())
 
 	content := container.New(layout.NewVBoxLayout(),
 		logoHeaderPanel(),
 		directoriesPanel(),
 		widget.NewSeparator(),
-		okCancelPanel())
+		okCancelPanel(),
+		statusLine("welcome"))
 
 	Window.SetContent(content)
 	Window.Resize(fyne.NewSize(600, 400))
@@ -139,22 +142,18 @@ func okCancelPanel() fyne.CanvasObject {
 	return okCancelPanel
 }
 
-func statusLine(msg string) *fyne.Container {
+func statusLine(msg string) fyne.CanvasObject {
 
 	statusMsg := canvas.NewText(msg, DarkRedColor)
 	statusMsg.TextSize = 9
-	statusMsg.Alignment = fyne.TextAlignTrailing
+	statusMsg.Alignment = fyne.TextAlignCenter
 
-	versionLabel := canvas.NewText("v."+domain.VersionStr, NavyColor)
+	versionLabel := canvas.NewText("v."+appVersion, DarkGrayColor)
 	versionLabel.TextSize = 9
 	versionLabel.Alignment = fyne.TextAlignCenter
 
-	return fyne.NewContainerWithLayout(layout.NewHBoxLayout(),
-		versionLabel,
-		widget.NewSeparator(),
-		layout.NewSpacer(),
-		statusMsg,
-	)
+	return container.New(layout.NewHBoxLayout(), versionLabel, widget.NewSeparator(), statusMsg)
+
 }
 
 func quitApp() {

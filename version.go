@@ -1,13 +1,10 @@
-package version42
+package version
 
 import "time"
 
 const VersionStr = "0.0.4b"
+const status = "pre-alpha"
 
-const AppName = "PDFminion"
-
-var Status = "pre-alpha - " + time.Now().Format("2. Jan 2006")
-
-func Version() string {
-	return VersionStr + Status
+func Status() string {
+	return status + " - " + time.Now().Format("2. Jan 2006")
 }

@@ -10,6 +10,11 @@ Accepted
 
 How to structure Golang code?
 
+> "The cmd layout pattern is very useful"
+> 
+> quoted from [1]
+> 
+> 
 ## Decision
 
 * `cmd` package for main application
@@ -20,7 +25,7 @@ resulting in:
 ````
 .
 ├── cmd
-├── docs
+├── doc
 ├── go.mod
 ├── go.sum
 ├── internal
@@ -28,7 +33,8 @@ resulting in:
 ````
 
 
-See [this article](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) for an introduction.
-## Consequences
+See these references:
+* [1] [Eli Benderskys](https://github.com/eliben/modlib) overview of this approach.
+* [2] [this article](https://medium.com/golang-learn/go-project-layout-e5213cdcfaa2) for an introduction.
 
-What becomes easier or more difficult to do and any risks introduced by the change that will need to be mitigated.
+## Consequences

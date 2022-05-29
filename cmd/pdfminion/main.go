@@ -1,10 +1,16 @@
 package main
 
+import (
+	version "pdfminion"
+	"pdfminion/internal/domain"
+	"pdfminion/internal/gui"
+)
+
 func main() {
 
-	SetupConfiguration()
+	domain.SetupConfiguration()
 
 	// create and run the user interface
-	gui.CreateMainUI()
+	gui.CreateMainUI(version.VersionStr + version.Status())
 
 }
